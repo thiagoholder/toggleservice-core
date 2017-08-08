@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using ToggleService.Data.Maps;
 
 namespace ToggleService.Data.Entities
 {
-    public class FeatureContext: DbContext
+    public class FeatureContext : DbContext
     {
-        public FeatureContext(): base("name=FeatureContext")
+        public FeatureContext(string nameOrConnectionString) : base(nameOrConnectionString){}
+
+        public FeatureContext() : base("name = FeatureContext")
         {
             Database.SetInitializer(new FeatureDbInitialize());
         }

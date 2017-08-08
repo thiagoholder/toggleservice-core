@@ -11,18 +11,18 @@ using ToggleService.Data.Repositorys;
 namespace ToggleService.API.Controllers
 {
     [RoutePrefix("api")]
-    public class FeatureController : ApiController
+    public class FeaturesController : ApiController
     {
         private readonly IFeatureRepository _repository;
         private readonly FeatureFactory _featureFactory = new FeatureFactory();
      
-        public FeatureController()
+        public FeaturesController()
         {
             _repository = new FeatureRepository(new
                 FeatureContext());
         }
 
-        public FeatureController(IFeatureRepository repository)
+        public FeaturesController(IFeatureRepository repository)
         {
             _repository = repository;
         }
@@ -33,7 +33,7 @@ namespace ToggleService.API.Controllers
         {
             try
             {
-                var featuresEnabled = _repository.GetAllEnabledFeatures();
+                var featuresEnabled = _repository.GetAllFeatures();
                 return Ok(ListFeaturesDto(featuresEnabled));
             }
             catch (Exception)
@@ -88,6 +88,31 @@ namespace ToggleService.API.Controllers
             catch (Exception)
             {
                 return InternalServerError();
+            }
+        }
+
+        [HttpPost]
+        public IHttpActionResult Post([FromBody] DTO.Feature feature)
+        {
+            try
+            {
+                if (feature == null)
+                {
+                    return BadRequest();
+                }
+
+                var featureEntity = _featureFactory.CreateFeature(feature);
+                var result = _repository.InsertFeature(featureEntity);
+
+                if (result.Status != RepositoryActionStatus.Created) return BadRequest();
+
+                var newFeature = _featureFactory.CreateFeature(result.Entity);
+                return Created(Request.RequestUri + "/" + newFeature.Id, newFeature);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
     }

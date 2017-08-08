@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToggleService.Data.Entities;
+﻿using ToggleService.Data.Entities;
 
 namespace ToggleService.Data.Factories
 {
@@ -14,6 +9,17 @@ namespace ToggleService.Data.Factories
             return new DTO.Feature
             {
                 Id = feature.IdFeature,
+                Description = feature.Description,
+                Enabled = feature.Enabled,
+                Version = feature.Version
+            };
+        }
+
+        public Feature CreateFeature(DTO.Feature feature)
+        {
+            return new Feature
+            {
+                IdFeature = feature.Id,
                 Description = feature.Description,
                 Enabled = feature.Enabled,
                 Version = feature.Version
