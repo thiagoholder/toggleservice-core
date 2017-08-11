@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ToggleService.Data.Interfaces;
-
-namespace ToggleService.Data.Entities
+﻿namespace ToggleService.Domain
 {
     public class FeatureToggle: Entity
     {

@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using ToggleService.Data.Entities;
 using ToggleService.Data.Interfaces;
+using ToggleService.Domain;
 
 namespace ToggleService.Data.Repositorys
 {

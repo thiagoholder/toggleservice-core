@@ -1,32 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using ToggleService.Application.Interfaces;
 using ToggleService.Data;
+using ToggleService.Data.Interfaces;
+using ToggleService.Domain;
 
 namespace ToggleService.Application
 {
     public class FeatureToggleApplication: IFeatureToggleApplication
     {
-        private readonly IFeatureRepository _repository;
+        private readonly IServiceRepository _repository;
 
-        public FeatureToggleApplication(IFeatureRepository repository)
+        public FeatureToggleApplication(IServiceRepository repository)
         {
             _repository = repository;
         }
-
-
-        public RepositoryActionStatus EnableOrDisableFeature(int idFeature, bool enabled)
+        
+        public FeatureToggle EnableOrDisableFeature(int service, int idFeature, bool enabled)
         {
-            var featureUpdate = _repository.Find(idFeature);
+            var serviceData = _repository.Find(service);
 
-            if (featureUpdate == null) return RepositoryActionStatus.Error;
+            //if (serviceData == null)
+                return null;
 
-            //featureUpdate.Enabled = enabled;
-            var featureEnableOrDisable = _repository.Update(featureUpdate);
-            return featureEnableOrDisable.Status;
+            //var findFeatureToggles = serviceData.FeaturesToggles.Where(x => x.Feature.Id == idFeature);
+            //foreach (var toggle in findFeatureToggles)
+            //{
+            //    toggle.Enabled = enabled;
+            //}
+
+
+            //if (featureUpdate == null) return null;
+
+            //featureUpdate. = enabled;
+            //var featureEnableOrDisable = _repository.Update(featureUpdate);
+            //return featureEnableOrDisable.Status;
         }
     }
 }

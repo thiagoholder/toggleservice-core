@@ -5,6 +5,7 @@ using ToggleService.Application.Interfaces;
 using ToggleService.API.Controllers;
 using ToggleService.Data;
 using ToggleService.Data.Entities;
+using ToggleService.Data.Interfaces;
 using ToggleService.Data.Repositorys;
 
 namespace ToggleService.API

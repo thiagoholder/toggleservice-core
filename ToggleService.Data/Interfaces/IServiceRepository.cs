@@ -2,7 +2,7 @@
 
 namespace ToggleService.Data.Interfaces
 {
-    public interface IFeatureRepository: IRepository<Feature>
+    public interface IServiceRepository: IRepository<Service>
     {
     }
 }

@@ -4,9 +4,9 @@ using ToggleService.Domain;
 
 namespace ToggleService.Data.Repositorys
 {
-    public class FeatureRepository : Repositoy<Feature>, IFeatureRepository
+    public class ServiceRepository: Repositoy<Service>, IServiceRepository
     {
-        public FeatureRepository(FeatureContext ctx) : base(ctx)
+        public ServiceRepository(FeatureContext ctx) : base(ctx)
         {
         }
     }

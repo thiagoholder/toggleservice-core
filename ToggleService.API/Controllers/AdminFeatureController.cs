@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ToggleService.Application.Interfaces;
-using ToggleService.Data.Entities;
 using ToggleService.Data.Factories;
+using ToggleService.Domain;
 
 namespace ToggleService.API.Controllers
 {

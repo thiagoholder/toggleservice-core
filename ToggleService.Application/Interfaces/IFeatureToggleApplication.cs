@@ -1,9 +1,10 @@
 ﻿using ToggleService.Data;
+using ToggleService.Domain;
 
 namespace ToggleService.Application.Interfaces
 {
     public interface IFeatureToggleApplication
     {
-        RepositoryActionStatus EnableOrDisableFeature(int idFeature, bool enabled);
+        FeatureToggle EnableOrDisableFeature(int service, int idFeature, bool enabled);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using ToggleService.Data.Maps;
+using ToggleService.Domain;
 
 namespace ToggleService.Data.Entities
 {

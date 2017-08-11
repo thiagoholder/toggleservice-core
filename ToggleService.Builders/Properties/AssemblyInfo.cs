@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ToggleService.DTO")]
+[assembly: AssemblyTitle("ToggleService.Builders")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ToggleService.DTO")]
+[assembly: AssemblyProduct("ToggleService.Builders")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c83d57c1-fa4e-47af-8d49-a57604fb9d61")]
+[assembly: Guid("f3ca414c-b026-4831-bcb7-dc58f01aa64d")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using ToggleService.Data.Interfaces;
 
-namespace ToggleService.Data.Entities
+namespace ToggleService.Domain
 {
     public class Service: Entity
     {

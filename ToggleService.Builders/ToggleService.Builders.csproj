@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D3640DA4-1DBD-4AD3-A6C0-086893531C47}</ProjectGuid>
+    <ProjectGuid>{F3CA414C-B026-4831-BCB7-DC58F01AA64D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ToggleService.Data</RootNamespace>
-    <AssemblyName>ToggleService.Data</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <RootNamespace>ToggleService.Builders</RootNamespace>
+    <AssemblyName>ToggleService.Builders</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -30,14 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="FizzWare.NBuilder, Version=5.0.0.138, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NBuilder.5.0.0\lib\net40\FizzWare.NBuilder.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,33 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\FeatureContext.cs" />
-    <Compile Include="Entities\FeatureDbInitialize.cs" />
-    <Compile Include="Factories\FeatureFactory.cs" />
-    <Compile Include="Interfaces\IFeatureRepository.cs" />
-    <Compile Include="Interfaces\IRepository.cs" />
-    <Compile Include="Interfaces\IServiceRepository.cs" />
-    <Compile Include="Maps\FeatureMap.cs" />
-    <Compile Include="Maps\FeatureToggleMap.cs" />
-    <Compile Include="Maps\ServiceMap.cs" />
+    <Compile Include="FeatureBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RepositoryActionResult.cs" />
-    <Compile Include="Repositorys\FeatureRepository.cs" />
-    <Compile Include="Repositorys\Repositoy.cs" />
-    <Compile Include="Repositorys\ServiceRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ToggleService.Domain\ToggleService.Domain.csproj">
       <Project>{CC8D370A-906C-4207-A400-39A5F00DA825}</Project>
       <Name>ToggleService.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ToggleService.DTO\ToggleService.DTO.csproj">
-      <Project>{c83d57c1-fa4e-47af-8d49-a57604fb9d61}</Project>
-      <Name>ToggleService.DTO</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

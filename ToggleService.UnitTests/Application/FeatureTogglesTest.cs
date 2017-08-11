@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using Moq;
 using ToggleService.Application;
 using ToggleService.Application.Interfaces;
-using ToggleService.Data;
-using ToggleService.Data.Entities;
-using Xunit;
+using ToggleService.Data.Interfaces;
+using ToggleService.Domain;
 
 namespace ToggleService.UnitTests.Application
 {

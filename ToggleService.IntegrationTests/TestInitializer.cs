@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using ToggleService.Data.Entities;
+using ToggleService.Domain;
 
 namespace ToggleService.IntegrationTests
 {

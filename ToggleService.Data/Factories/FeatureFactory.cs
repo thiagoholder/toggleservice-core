@@ -1,4 +1,4 @@
-﻿using ToggleService.Data.Entities;
+﻿using ToggleService.Domain;
 
 namespace ToggleService.Data.Factories
 {

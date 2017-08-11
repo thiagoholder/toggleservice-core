@@ -1,6 +1,4 @@
-﻿using ToggleService.Data.Interfaces;
-
-namespace ToggleService.Data.Entities
+﻿namespace ToggleService.Domain
 {
     public class Feature: Entity
     {

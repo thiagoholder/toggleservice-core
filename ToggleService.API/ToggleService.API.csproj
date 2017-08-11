@@ -160,6 +160,10 @@
       <Project>{D3640DA4-1DBD-4AD3-A6C0-086893531C47}</Project>
       <Name>ToggleService.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ToggleService.Domain\ToggleService.Domain.csproj">
+      <Project>{cc8d370a-906c-4207-a400-39a5f00da825}</Project>
+      <Name>ToggleService.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ToggleService.DTO\ToggleService.DTO.csproj">
       <Project>{c83d57c1-fa4e-47af-8d49-a57604fb9d61}</Project>
       <Name>ToggleService.DTO</Name>
