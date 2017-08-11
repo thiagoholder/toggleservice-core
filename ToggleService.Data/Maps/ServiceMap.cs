@@ -13,9 +13,6 @@ namespace ToggleService.Data.Maps
                 .IsRequired()
                 .HasMaxLength(100)
                 .HasColumnType("varchar");
-            HasMany(x => x.FeaturesToggles)
-                .WithRequired(x => x.Service)
-                .HasForeignKey(x => x.IdService);
         }
 
     }

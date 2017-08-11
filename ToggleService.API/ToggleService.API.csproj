@@ -136,9 +136,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Feature.cs" />
-    <Compile Include="Models\FeatureFactory.cs" />
+    <Compile Include="Models\Factories\FeatureFactory.cs" />
     <Compile Include="Models\Service.cs" />
-    <Compile Include="Models\ServiceFactory.cs" />
+    <Compile Include="Models\ServiceDetailsModel.cs" />
+    <Compile Include="Models\Factories\ServiceFactory.cs" />
+    <Compile Include="Models\ToggleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

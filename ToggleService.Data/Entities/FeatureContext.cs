@@ -11,6 +11,7 @@ namespace ToggleService.Data.Entities
         public FeatureContext() : base("Name=FeatureContext")
         {
             Database.SetInitializer(new FeatureDbInitialize());
+            Configuration.LazyLoadingEnabled = true;
         }
 
         public DbSet<Feature> Features { get; set; }
@@ -22,6 +23,7 @@ namespace ToggleService.Data.Entities
             modelBuilder.Configurations.Add(new FeatureMap());
             modelBuilder.Configurations.Add(new ServiceMap());
             modelBuilder.Configurations.Add(new FeatureToggleMap());
+           
             base.OnModelCreating(modelBuilder);
         }
     }

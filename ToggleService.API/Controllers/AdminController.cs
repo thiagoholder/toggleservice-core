@@ -99,7 +99,7 @@ namespace ToggleService.API.Controllers
         /// <returns>Servicees</returns>
         /// <response code="404">Not found feature</response>
         [Route("services")]
-        [ResponseType(typeof(IEnumerable<ServiceModel>))]
+        [ResponseType(typeof(IEnumerable<ServiceDetailsModel>))]
         [HttpGet]
         public IHttpActionResult GetAllServices()
         {
@@ -113,6 +113,8 @@ namespace ToggleService.API.Controllers
                 return InternalServerError();
             }
         }
+
+
 
         /// <summary>
         /// Receives a service through id
@@ -226,9 +228,9 @@ namespace ToggleService.API.Controllers
             return features.Select(f => _featureFactory.CreateFeature(f));
         }
 
-        private IEnumerable<ServiceModel> ListServicesModel(IEnumerable<Service> services)
+        private IEnumerable<ServiceDetailsModel> ListServicesModel(IEnumerable<Service> services)
         {
-            return services.Select(s => _serviceFactory.CretaService(s));
+            return services.Select(s => _serviceFactory.CretaServiceWithDetail(s));
         }
     }
 }

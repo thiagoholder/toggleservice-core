@@ -12,5 +12,6 @@ namespace ToggleService.Application.Interfaces
         IEnumerable<Service> GetAllServices();
         RepositoryActionResult<Service> InsertService(Service obj);
         RepositoryActionResult<Service> UpdateService(Service obj);
+        
     }
 }

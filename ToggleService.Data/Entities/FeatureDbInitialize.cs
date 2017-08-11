@@ -16,19 +16,17 @@ namespace ToggleService.Data.Entities
             };
             foreach (var std in defaultFeatures)
                 context.Features.Add(std);
-            var toggleFeatures = new List<FeatureToggle>()
+
+            var defaultServices = new List<Service>()
             {
-                new FeatureToggle()
-                {
-                    Enabled = true,
-                    Feature = defaultFeatures.Find(x => x.Id == 1),
-                },
-                new FeatureToggle()
-                {
-                    Enabled = false,
-                    Feature = defaultFeatures.Find(x => x.Id == 2),
-                }
+                new Service {Name = "Service A", Id = 1},
+                new Service {Name = "Service B", Id = 2 },
+                new Service {Name = "Service C", Id = 3}
             };
+            foreach (var service in defaultServices)
+            {
+                context.Services.Add(service);
+            }
 
             var toggleFeaturesA = new List<FeatureToggle>()
             {
@@ -36,20 +34,12 @@ namespace ToggleService.Data.Entities
                 {
                     Enabled = false,
                     Feature = defaultFeatures.Find(x => x.Id == 3),
+                    Service = defaultServices.Find(x => x.Id == 1 )
                 }
             };
 
-            var defaultServices = new List<Service>()
-            {
-                new Service {Name = "Service A", FeaturesToggles = toggleFeaturesA.ToList()},
-                new Service {Name = "Service B", FeaturesToggles = toggleFeatures.ToList()},
-                new Service {Name = "Service C" }
-            };
-            foreach (var service in defaultServices)
-            {
-                context.Services.Add(service);
-            }
-            
+
+
             base.Seed(context);
         }
     }

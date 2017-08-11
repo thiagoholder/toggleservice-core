@@ -10,29 +10,30 @@ namespace ToggleService.Data.Repositorys
     public class Repositoy<TEntity> : IDisposable,
         IRepository<TEntity> where TEntity : Entity
     {
-        private FeatureContext _context;
-        
-          public Repositoy(FeatureContext ctx)
+        public FeatureContext Context { get; private set; }
+
+
+        public Repositoy(FeatureContext ctx)
         {
-            _context = ctx;
+            Context = ctx;
         }
 
-        public IQueryable<TEntity> GetAll()
+        public virtual IQueryable<TEntity> GetAll()
         {
-            return _context.Set<TEntity>();
+            return Context.Set<TEntity>();
         }
 
-        public IQueryable<TEntity> Get(Func<TEntity, bool> predicate)
+        public virtual IQueryable<TEntity> Get(Func<TEntity, bool> predicate)
         {
             return GetAll().Where(predicate).AsQueryable();
         }
 
-        public TEntity Find(params object[] key)
+        public virtual TEntity Find(params object[] key)
         {
-            return _context.Set<TEntity>().Find(key);
+            return Context.Set<TEntity>().Find(key);
         }
 
-        public RepositoryActionResult<TEntity> Update(TEntity obj)
+        public virtual RepositoryActionResult<TEntity> Update(TEntity obj)
         {
             try
             {
@@ -42,11 +43,11 @@ namespace ToggleService.Data.Repositorys
                 {
                     return new RepositoryActionResult<TEntity>(obj, RepositoryActionStatus.NotFound);
                 }
-                _context.Entry(existingFeature).State = EntityState.Detached;
-                _context.Set<TEntity>().Attach(obj);
-                _context.Entry(obj).State = EntityState.Modified;
+                Context.Entry(existingFeature).State = EntityState.Detached;
+                Context.Set<TEntity>().Attach(obj);
+                Context.Entry(obj).State = EntityState.Modified;
 
-                var result = _context.SaveChanges();
+                var result = Context.SaveChanges();
                 return result > 0
                     ? new RepositoryActionResult<TEntity>(obj, RepositoryActionStatus.Updated)
                     : new RepositoryActionResult<TEntity>(obj, RepositoryActionStatus.NothingModified, null);
@@ -58,12 +59,12 @@ namespace ToggleService.Data.Repositorys
         }
   
 
-        public RepositoryActionResult<TEntity> Insert(TEntity obj)
+        public virtual RepositoryActionResult<TEntity> Insert(TEntity obj)
         {
             try
             {
-                _context.Set<TEntity>().Add(obj);
-                var result = _context.SaveChanges();
+                Context.Set<TEntity>().Add(obj);
+                var result = Context.SaveChanges();
                 return result > 0
                     ? new RepositoryActionResult<TEntity>(obj, RepositoryActionStatus.Created)
                     : new RepositoryActionResult<TEntity>(obj, RepositoryActionStatus.NothingModified, null);
@@ -82,9 +83,9 @@ namespace ToggleService.Data.Repositorys
         protected void Dispose(bool disposing)
         {
             if (!disposing) return;
-            if (_context == null) return;
-            _context.Dispose();
-            _context = null;
+            if (Context == null) return;
+            Context.Dispose();
+            Context = null;
         }
 
         public void Dispose()
