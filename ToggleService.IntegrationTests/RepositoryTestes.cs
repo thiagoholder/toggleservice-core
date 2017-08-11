@@ -16,7 +16,7 @@ namespace ToggleService.IntegrationTests
             _featureRepository = new FeatureRepository(FeatureContext);
             _featureRepository.Should().NotBeNull();
 
-            var features = _featureRepository.GetAllFeatures();
+            var features = _featureRepository.GetAll();
             features.Should().NotBeNull();
 
         }

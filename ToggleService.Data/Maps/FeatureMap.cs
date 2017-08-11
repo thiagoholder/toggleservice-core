@@ -7,12 +7,11 @@ namespace ToggleService.Data.Maps
     {
         public FeatureMap()
         {
-            HasKey(x => x.IdFeature);
+            HasKey(x => x.Id);
             ToTable("Feature");
             Property(x => x.Description).IsRequired()
                 .HasMaxLength(100)
                 .HasColumnType("varchar");
-            Property(p => p.Enabled).IsRequired();
             Property(p => p.Version).IsRequired();
         }
     }

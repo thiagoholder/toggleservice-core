@@ -8,9 +8,8 @@ namespace ToggleService.Data.Factories
         {
             return new DTO.Feature
             {
-                Id = feature.IdFeature,
+                Id = feature.Id,
                 Description = feature.Description,
-                Enabled = feature.Enabled,
                 Version = feature.Version
             };
         }
@@ -19,9 +18,8 @@ namespace ToggleService.Data.Factories
         {
             return new Feature
             {
-                IdFeature = feature.Id,
+                Id = feature.Id,
                 Description = feature.Description,
-                Enabled = feature.Enabled,
                 Version = feature.Version
             };
         }

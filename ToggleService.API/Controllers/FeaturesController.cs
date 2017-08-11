@@ -1,40 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
-using System.Web.Http.Description;
-using ToggleService.Data;
+using ToggleService.Application;
+using ToggleService.Application.Interfaces;
 using ToggleService.Data.Entities;
 using ToggleService.Data.Factories;
 using ToggleService.Data.Repositorys;
 
 namespace ToggleService.API.Controllers
 {
-    [RoutePrefix("api")]
+    [RoutePrefix("api/feature")]
     public class FeaturesController : ApiController
     {
-        private readonly IFeatureRepository _repository;
+        private readonly IFeatureApplication _toogleApplication;
         private readonly FeatureFactory _featureFactory = new FeatureFactory();
-     
+
         public FeaturesController()
         {
-            _repository = new FeatureRepository(new
-                FeatureContext());
+            _toogleApplication = new FeatureApplication(new FeatureRepository(new FeatureContext()));
         }
 
-        public FeaturesController(IFeatureRepository repository)
+        public FeaturesController(IFeatureApplication toogleApplication)
         {
-            _repository = repository;
+            _toogleApplication = toogleApplication;
         }
-
-        [Route("features/enabled")]
-        [ResponseType(typeof(IEnumerable<DTO.Feature>))]
-        public IHttpActionResult GetAllEnabledFeatures()
+        /// <summary>
+        /// Get a feature by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Feature is found</returns>
+        /// <response code="404">If feature item is notfound</response>
+        [Route("{id:int}")]
+        public IHttpActionResult GetFeatureById(int id)
         {
             try
             {
-                var featuresEnabled = _repository.GetAllFeatures();
-                return Ok(ListFeaturesDto(featuresEnabled));
+                var featureFound = _toogleApplication.GetFeature(id);
+                return featureFound != null ? (IHttpActionResult) Ok(featureFound) : NotFound();
             }
             catch (Exception)
             {
@@ -42,77 +43,23 @@ namespace ToggleService.API.Controllers
             }
         }
 
-        [Route("features")]
-        [ResponseType(typeof(IEnumerable<DTO.Feature>))]
-        public IHttpActionResult GetAllFeatures()
-        {
-            try
-            {
-                var features = _repository.GetAllFeatures();
-                return Ok(ListFeaturesDto(features));
-            }
-            catch (Exception)
-            {
-                return InternalServerError();
-            }
-        }
-        private IEnumerable<DTO.Feature> ListFeaturesDto(IEnumerable<Feature> featuresEnabled)
-        {
-            return featuresEnabled.Select(f => _featureFactory.CreateFeature(f));
-        }
-
-        [Route("features/{id:int}")]
-        [ResponseType(typeof(DTO.Feature))]
-        public IHttpActionResult GetFeature(int id)
-        {
-            try
-            {
-                var features = _repository.GetFeature(id);
-                return features == null ? (IHttpActionResult) NotFound() : Ok(_featureFactory.CreateFeature(features));
-            }
-            catch (Exception)
-            {
-                return InternalServerError();
-            }
-        }
-
-        [Route("features/{description}")]
-        [ResponseType(typeof(DTO.Feature))]
+        /// <summary>
+        /// Get a feature by id
+        /// </summary>
+        /// <param name="description"></param>
+        /// <returns>Feature id found</returns>
+        /// <response code="404">If feature item is notfound</response>
+        [Route("{description}")]
         public IHttpActionResult GetFeatureByDescription(string description)
         {
             try
             {
-                var features = _repository.GetFeature(description);
-                return features == null ? (IHttpActionResult)NotFound() : Ok(_featureFactory.CreateFeature(features));
+                var featureFound = _toogleApplication.GetFeature(description);
+                return featureFound != null ? (IHttpActionResult)Ok(featureFound) : NotFound();
             }
             catch (Exception)
             {
                 return InternalServerError();
-            }
-        }
-
-        [HttpPost]
-        public IHttpActionResult Post([FromBody] DTO.Feature feature)
-        {
-            try
-            {
-                if (feature == null)
-                {
-                    return BadRequest();
-                }
-
-                var featureEntity = _featureFactory.CreateFeature(feature);
-                var result = _repository.InsertFeature(featureEntity);
-
-                if (result.Status != RepositoryActionStatus.Created) return BadRequest();
-
-                var newFeature = _featureFactory.CreateFeature(result.Entity);
-                return Created(Request.RequestUri + "/" + newFeature.Id, newFeature);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
             }
         }
     }

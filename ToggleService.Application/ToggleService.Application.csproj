@@ -40,8 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FeatureToggle.cs" />
-    <Compile Include="IFeatureToggle.cs" />
+    <Compile Include="FeatureApplication.cs" />
+    <Compile Include="FeatureToggleApplication.cs" />
+    <Compile Include="Interfaces\IFeatureApplication.cs" />
+    <Compile Include="Interfaces\IFeatureToggleApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
