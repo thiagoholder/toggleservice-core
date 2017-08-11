@@ -1,12 +1,12 @@
 ﻿using ToggleService.Domain;
 
-namespace ToggleService.Data.Factories
+namespace ToggleService.API.Models
 {
     public class FeatureFactory
     {
-        public DTO.Feature CreateFeature(Feature feature)
+        public FeatureModel CreateFeature(Feature feature)
         {
-            return new DTO.Feature
+            return new FeatureModel
             {
                 Id = feature.Id,
                 Description = feature.Description,
@@ -14,7 +14,7 @@ namespace ToggleService.Data.Factories
             };
         }
 
-        public Feature CreateFeature(DTO.Feature feature)
+        public Feature CreateFeature(FeatureModel feature)
         {
             return new Feature
             {

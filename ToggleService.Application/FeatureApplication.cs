@@ -21,7 +21,5 @@ namespace ToggleService.Application
         public RepositoryActionResult<Feature> UpdateFeature(Feature obj) => _repository.Update(obj);
         public Feature GetFeature(string description) => _repository.Get(x => x.Description == description).FirstOrDefault();
         public Feature GetFeature(int id) => _repository.Find(id);
-        
-        
     }
 }

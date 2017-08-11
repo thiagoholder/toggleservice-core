@@ -49,7 +49,6 @@
   <ItemGroup>
     <Compile Include="Entities\FeatureContext.cs" />
     <Compile Include="Entities\FeatureDbInitialize.cs" />
-    <Compile Include="Factories\FeatureFactory.cs" />
     <Compile Include="Interfaces\IFeatureRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IServiceRepository.cs" />

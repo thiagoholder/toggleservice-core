@@ -2,8 +2,8 @@
 using System.Web.Http;
 using ToggleService.Application;
 using ToggleService.Application.Interfaces;
+using ToggleService.API.Models;
 using ToggleService.Data.Entities;
-using ToggleService.Data.Factories;
 using ToggleService.Data.Repositorys;
 
 namespace ToggleService.API.Controllers

@@ -1,5 +1,4 @@
-﻿using ToggleService.Data;
-using ToggleService.Domain;
+﻿using ToggleService.Domain;
 
 namespace ToggleService.Application.Interfaces
 {

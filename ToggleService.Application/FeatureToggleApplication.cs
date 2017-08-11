@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using ToggleService.Application.Interfaces;
-using ToggleService.Data;
+﻿using ToggleService.Application.Interfaces;
 using ToggleService.Data.Interfaces;
 using ToggleService.Domain;
 
