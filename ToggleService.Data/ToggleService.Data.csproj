@@ -52,12 +52,14 @@
     <Compile Include="Interfaces\IFeatureRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IServiceRepository.cs" />
+    <Compile Include="Interfaces\IFeatureToggleRepository.cs" />
     <Compile Include="Maps\FeatureMap.cs" />
     <Compile Include="Maps\FeatureToggleMap.cs" />
     <Compile Include="Maps\ServiceMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryActionResult.cs" />
     <Compile Include="Repositorys\FeatureRepository.cs" />
+    <Compile Include="Repositorys\FeatureToggleRepository.cs" />
     <Compile Include="Repositorys\Repositoy.cs" />
     <Compile Include="Repositorys\ServiceRepository.cs" />
   </ItemGroup>
@@ -66,10 +68,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ToggleService.Domain\ToggleService.Domain.csproj">
-      <Project>{CC8D370A-906C-4207-A400-39A5F00DA825}</Project>
-      <Name>ToggleService.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ToggleService.DTO\ToggleService.DTO.csproj">
       <Project>{c83d57c1-fa4e-47af-8d49-a57604fb9d61}</Project>
       <Name>ToggleService.DTO</Name>

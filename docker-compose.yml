@@ -1,0 +1,10 @@
+﻿mongodb:
+  image: mongo
+  container_name: "mongodb_dev"
+  ports:
+    - "27017:27017"
+
+mongo-seed:
+  build: ./mongo-seed
+  links:
+    - mongodb

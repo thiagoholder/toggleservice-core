@@ -1,61 +1,53 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
-using ToggleService.Application;
-using ToggleService.Application.Interfaces;
+using System.Web.Http.Description;
+using ToggleService.API.Helpers;
 using ToggleService.API.Models;
-using ToggleService.Data.Entities;
-using ToggleService.Data.Repositorys;
+using ToggleService.DataMongoDB.Repository;
 
 namespace ToggleService.API.Controllers
 {
-    [RoutePrefix("api/feature")]
+    [RoutePrefix("api/toggles")]
     public class FeaturesController : ApiController
     {
-        private readonly IFeatureApplication _toogleApplication;
-        private readonly FeatureFactory _featureFactory = new FeatureFactory();
+        private readonly IToggleRepository _toggleRepository;
+        private readonly ToogleFactory _toggleFactory = new ToogleFactory();
 
-        public FeaturesController()
+        public FeaturesController(IToggleRepository toggleRepository)
         {
-            _toogleApplication = new FeatureApplication(new FeatureRepository(new FeatureContext()));
+            _toggleRepository = toggleRepository;
         }
 
-        public FeaturesController(IFeatureApplication toogleApplication)
-        {
-            _toogleApplication = toogleApplication;
-        }
-        /// <summary>
-        /// Get a feature by id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Feature is found</returns>
-        /// <response code="404">If feature item is notfound</response>
-        [Route("{id:int}")]
-        public IHttpActionResult GetFeatureById(int id)
+        [Route("{nameFeature}")]
+        [ResponseType(typeof(ToggleModel))]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetToggleFeature(string nameFeature)
         {
             try
             {
-                var featureFound = _toogleApplication.GetFeature(id);
-                return featureFound != null ? (IHttpActionResult) Ok(featureFound) : NotFound();
-            }
-            catch (Exception)
-            {
-                return InternalServerError();
-            }
-        }
+                IEnumerable<string> headerValues;
+                var uniqueServiceKey = string.Empty;
 
-        /// <summary>
-        /// Get a feature by id
-        /// </summary>
-        /// <param name="description"></param>
-        /// <returns>Feature id found</returns>
-        /// <response code="404">If feature item is notfound</response>
-        [Route("{description}")]
-        public IHttpActionResult GetFeatureByDescription(string description)
-        {
-            try
-            {
-                var featureFound = _toogleApplication.GetFeature(description);
-                return featureFound != null ? (IHttpActionResult)Ok(featureFound) : NotFound();
+                if (Request.Headers.TryGetValues("uniqueServiceKey", out headerValues))
+                {
+                    uniqueServiceKey = headerValues.FirstOrDefault();
+                }
+
+                Request.GetHeader("uniqueServiceKey");
+
+                var toggle = await _toggleRepository.GetToggle(uniqueServiceKey);
+                if (toggle == null)
+                    return NotFound();
+
+
+                toggle.Features = toggle.Features.Where(x => x.Name == nameFeature).ToList();
+
+                return !toggle.Features.Any()
+                    ? (IHttpActionResult)NotFound()
+                    : Ok(_toggleFactory.CreateToggleFeature(toggle));
             }
             catch (Exception)
             {

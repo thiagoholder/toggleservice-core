@@ -40,23 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FeatureApplication.cs" />
-    <Compile Include="FeatureToggleApplication.cs" />
     <Compile Include="Interfaces\IFeatureApplication.cs" />
     <Compile Include="Interfaces\IFeatureToggleApplication.cs" />
     <Compile Include="Interfaces\IServiceApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceApplication.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ToggleService.Data\ToggleService.Data.csproj">
-      <Project>{d3640da4-1dbd-4ad3-a6c0-086893531c47}</Project>
-      <Name>ToggleService.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ToggleService.Domain\ToggleService.Domain.csproj">
-      <Project>{cc8d370a-906c-4207-a400-39a5f00da825}</Project>
-      <Name>ToggleService.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

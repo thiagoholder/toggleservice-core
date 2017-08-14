@@ -37,7 +37,9 @@ namespace ToggleService.API
                 = Newtonsoft.Json.Formatting.Indented;
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver
                 = new CamelCasePropertyNamesContractResolver();
-            
+
+            config.MessageHandlers.Add(new CacheCow.Server.CachingHandler(config));
+
             return config;
         }
         

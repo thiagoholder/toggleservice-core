@@ -1,43 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using ToggleService.Application.Interfaces;
 using ToggleService.API.Models;
-using ToggleService.Data;
-using ToggleService.Domain;
+using ToggleService.DataMongoDB.Entities;
+using ToggleService.DataMongoDB.Repository;
 
 namespace ToggleService.API.Controllers
 {
     [RoutePrefix("api/admin")]
     public class AdminController : ApiController
     {
-        private readonly IFeatureApplication _featureApplication;
-        private readonly IServiceApplication _serviceApplication;
-        private readonly FeatureFactory _featureFactory = new FeatureFactory();
-        private readonly ServiceFactory _serviceFactory = new ServiceFactory();
 
-        public AdminController(IFeatureApplication application, IServiceApplication serviceApplication)
+        private readonly IToggleRepository _toggleRepository;
+        private readonly ToogleFactory _toggleFactory = new ToogleFactory();
+
+        public AdminController(IToggleRepository toggleRepository)
         {
-            _featureApplication = application;
-            _serviceApplication = serviceApplication;
+            _toggleRepository = toggleRepository;
         }
 
         /// <summary>
         /// Get all features from de central database.
         /// </summary>
         /// <returns>All Features</returns>
-        /// <response code="404">Not found features</response>
-        [Route("features")]
-        [ResponseType(typeof(IEnumerable<FeatureModel>))]
+        /// <response code="404">Not found toogles</response>
+        [Route("toggles")]
+        [ResponseType(typeof(IEnumerable<ToggleModel>))]
         [HttpGet]
-        public IHttpActionResult GetAllFeatures()
+        public async Task<IHttpActionResult>  GetAllToggles(string fields = null)
         {
             try
             {
-                var features = _featureApplication.GetAllFeature();
-                return Ok(ListFeaturesDto(features));
+                var listOfFields = new List<string>();
+                if (fields != null)
+                {
+                    listOfFields = fields.ToLower().Split(',').ToList();
+                   
+                }
+
+                var toggles = await _toggleRepository.GetAllToggles();
+                var enumerable = toggles as IList<Toggle> ?? toggles.ToList();
+
+                if (!enumerable.ToList().Any())
+                    return NotFound();
+
+                return Ok(enumerable.Select(t => _toggleFactory.CreateDataShapedObject(t, listOfFields)));
             }
             catch (Exception)
             {
@@ -48,20 +58,28 @@ namespace ToggleService.API.Controllers
         /// <summary>
         /// Receives a feature through id
         /// </summary>
-        /// <returns>Feature</returns>
-        /// <param name="id">Unique Id</param>
-        /// <response code="404">Not found feature</response>
-        [Route("features/{id:int}")]
-        [ResponseType(typeof(FeatureModel))]
+        /// <param name="uniqueServiceKey">Unique Id</param>
+        /// <returns>Toggle</returns>
+        /// <response code="404">Not found toggles</response>
+        /// <response code="200">Found toggles</response>
+        [Route("toggles/{uniqueServiceKey}")]
+        [ResponseType(typeof(ToggleModel))]
         [HttpGet]
-        public IHttpActionResult GetFeatureById(int id)
+        public async Task<IHttpActionResult>  GetToggle(string uniqueServiceKey, string fields = null)
         {
             try
             {
-                var feature = _featureApplication.GetFeature(id);
-                return feature == null
-                    ? (IHttpActionResult) NotFound()
-                    : Ok(_featureFactory.CreateFeature(feature));
+                var listOfFields = new List<string>();
+                if (fields != null)
+                {
+                    listOfFields = fields.ToLower().Split(',').ToList();
+
+                }
+
+                var toggle = await _toggleRepository.GetToggle(uniqueServiceKey);
+                return toggle == null
+                    ? (IHttpActionResult)NotFound()
+                    : Ok( _toggleFactory.CreateDataShapedObject(toggle, listOfFields));
             }
             catch (Exception)
             {
@@ -70,152 +88,58 @@ namespace ToggleService.API.Controllers
         }
 
         /// <summary>
-        /// Receives a feature through description
+        /// Get One Feature 
         /// </summary>
-        /// <returns>Feature</returns>
-        /// <param name="description">Description Feature</param>
-        /// <response code="404">Not found feature</response>
-        [Route("features/{description}")]
-        [ResponseType(typeof(FeatureModel))]
-        [HttpGet]
-        public IHttpActionResult GetFeatureByDescription(string description)
-        {
-            try
-            {
-                var feature = _featureApplication.GetFeature(description);
-                return feature == null
-                    ? (IHttpActionResult) NotFound()
-                    : Ok(_featureFactory.CreateFeature(feature));
-            }
-            catch (Exception)
-            {
-                return InternalServerError();
-            }
-        }
-
-        /// <summary>
-        /// Get all Services of the System
-        /// </summary>
-        /// <returns>Servicees</returns>
-        /// <response code="404">Not found feature</response>
-        [Route("services")]
-        [ResponseType(typeof(IEnumerable<ServiceDetailsModel>))]
-        [HttpGet]
-        public IHttpActionResult GetAllServices()
-        {
-            try
-            {
-                var service = _serviceApplication.GetAllServices().ToList();
-                return service.Any() ? (IHttpActionResult) Ok(ListServicesModel(service)) : NotFound();
-            }
-            catch (Exception)
-            {
-                return InternalServerError();
-            }
-        }
-
-
-
-        /// <summary>
-        /// Receives a service through id
-        /// </summary>
-        /// <param name="id">Id Service</param>
-        /// <returns>Service</returns>
-        /// <response code="404">Not found feature</response>
-        [Route("services/{id:int}")]
-        [ResponseType(typeof(ServiceModel))]
-        [HttpGet]
-        public IHttpActionResult GetServiceById(int id)
-        {
-            try
-            {
-                var service = _serviceApplication.GetService(id);
-                return service == null
-                    ? (IHttpActionResult) NotFound()
-                    : Ok(_serviceFactory.CretaService(service));
-            }
-            catch (Exception)
-            {
-                return InternalServerError();
-            }
-        }
-
-        /// <summary>
-        /// Receives a service through id
-        /// </summary>
-        /// <param name="name">Id Service</param>
-        /// <returns>Service</returns>
-        /// <response code="404">Not found feature</response>
-        [Route("services/{name}")]
-        [ResponseType(typeof(ServiceModel))]
-        [HttpGet]
-        public IHttpActionResult GetServiceByName(string name)
-        {
-            try
-            {
-                var service = _serviceApplication.GetService(name);
-                return service == null
-                    ? (IHttpActionResult) NotFound()
-                    : Ok(_serviceFactory.CretaService(service));
-            }
-            catch (Exception)
-            {
-                return InternalServerError();
-            }
-        }
-
-        /// <summary>
-        /// Insert a new Feature in System
-        /// </summary>
-        /// <param name="feature">Feature</param>
+        /// <param name="uniqueServiceKey">Unique Id Toggle</param>
+        /// <param name="nameFeature">Name Of Feature</param>
         /// <returns></returns>
-        /// <response code="201">New Feature Is Created</response>
-        /// <response code="400">New Feature Is Not Created</response>
-        [Route("features")]
-        [ResponseType(typeof(DTO.Feature))]
-        [HttpPost]
-        public IHttpActionResult PostFeature([FromBody] FeatureModel feature)
+        [Route("toggles/{uniqueServiceKey}/{nameFeature}")]
+        [ResponseType(typeof(ToggleModel))]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetToggleFeature(string uniqueServiceKey, string nameFeature)
         {
             try
             {
-                if (feature == null) return BadRequest();
+               
+                var toggle = await _toggleRepository.GetToggle(uniqueServiceKey);
+                if ( toggle == null)
+                    return NotFound();
 
-                var newFeature = _featureFactory.CreateFeature(feature);
-                var result = _featureApplication.InsertFeature(newFeature);
 
-                if (result.Status != RepositoryActionStatus.Created) return BadRequest();
-
-                var newFeatureDto = _featureFactory.CreateFeature(result.Entity);
-                return Created(Request.RequestUri + "/" + newFeatureDto.Id, newFeatureDto);
+                toggle.Features = toggle.Features.Where(x => x.Name == nameFeature).ToList();
+               
+                return !toggle.Features.Any()
+                    ? (IHttpActionResult)NotFound()
+                    : Ok(_toggleFactory.CreateToggleFeature(toggle));
             }
             catch (Exception)
             {
                 return InternalServerError();
             }
         }
+
+
         /// <summary>
-        /// Insert a new Service in the System
+        /// Insert a new Toggle in System
         /// </summary>
-        /// <param name="service">Service</param>
+        /// <param name="toggle"></param>
         /// <returns></returns>
-        /// <response code="201">New Service Is Created</response>
-        /// <response code="400">New Service Is Not Created</response>
-        [Route("services")]
-        [ResponseType(typeof(ServiceModel))]
+        /// <response code="201">New Toggle Is Created</response>
+        /// <response code="400">Toggle Is Not Created</response>
+        [Route("toggles")]
+        [ResponseType(typeof(ToggleModel))]
         [HttpPost]
-        public IHttpActionResult PostService([FromBody] ServiceModel service)
+        public async  Task<IHttpActionResult> PostToggle([FromBody] ToggleModel toggle)
         {
             try
             {
-                if (service == null) return BadRequest();
+                if (toggle == null) return BadRequest();
 
-                var newService = _serviceFactory.CretaService(service);
-                var result = _serviceApplication.InsertService(newService);
-
-                if (result.Status != RepositoryActionStatus.Created) return BadRequest();
-
-                var newServiceDto = _serviceFactory.CretaService(result.Entity);
-                return Created(Request.RequestUri + "/" + newServiceDto.Id, newServiceDto);
+                var newToggle = _toggleFactory.CreateToggle(toggle);
+                await _toggleRepository.AddToggle(newToggle);
+                
+                var newToggleModel = _toggleFactory.CreateToggle(newToggle);
+                return Created(Request.RequestUri + "/" + newToggle.AppName, newToggleModel);
             }
             catch (Exception)
             {
@@ -223,14 +147,60 @@ namespace ToggleService.API.Controllers
             }
         }
 
-        private IEnumerable<FeatureModel> ListFeaturesDto(IEnumerable<Feature> features)
+        /// <summary>
+        /// Insert a new Toggle in System
+        /// </summary>
+        /// <param name="uniqueServiceKey">App Name</param>
+        /// <returns></returns>
+        /// <response code="201">New Toggle Is Created</response>
+        /// <response code="400">Toggle Is Not Created</response>
+        [Route("toggles")]
+        [HttpDelete]
+        public async Task<IHttpActionResult> DeleteToggle(string uniqueServiceKey)
         {
-            return features.Select(f => _featureFactory.CreateFeature(f));
+            try
+            {
+                var toggle = _toggleRepository.GetToggle(uniqueServiceKey);
+                await _toggleRepository.RemoveToggle(uniqueServiceKey);
+                return Created(Request.RequestUri, toggle);
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
         }
 
-        private IEnumerable<ServiceDetailsModel> ListServicesModel(IEnumerable<Service> services)
+        /// <summary>
+        /// Insert a new Toggle in System
+        /// </summary>
+        /// <param name="uniqueServiceKey"></param>
+        /// <param name="toggleModel">JSOn Toggle</param>
+        /// <returns></returns>
+        /// <response code="201">New Toggle Is Created</response>
+        /// <response code="400">Toggle Is Not Created</response>
+        [Route("toggles")]
+        [HttpPut]
+        public async Task<IHttpActionResult> PutToggle(string uniqueServiceKey, [FromBody] ToggleModel toggleModel)
         {
-            return services.Select(s => _serviceFactory.CretaServiceWithDetail(s));
+            try
+            {
+                if(string.IsNullOrEmpty(uniqueServiceKey) || toggleModel == null)
+                    return BadRequest();
+
+                var toggleExists = await _toggleRepository.GetToggle(uniqueServiceKey);
+
+                if (toggleExists == null)
+                    return NotFound();
+
+                var updateToggle = _toggleFactory.CreateToggle(toggleModel);
+
+                await _toggleRepository.UpdateToggleDocument(uniqueServiceKey, updateToggle);
+                return Ok(updateToggle);
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
         }
     }
 }

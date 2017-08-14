@@ -1,24 +1,17 @@
 ﻿using System;
-using System.Data.Entity;
-using ToggleService.Data.Entities;
+using MongoDB.Bson;
+using ToggleService.DataMongoDB.Entities;
 
 namespace ToggleService.IntegrationTests
 {
-    public class SetupDBTests: IDisposable
+    public class SetupDBTests
     {
-        public FeatureContext TestFeatureContext { get;  }
+        public ToggleContext TestFeatureContext { get; }
 
         public SetupDBTests()
         {
-            Database.SetInitializer(new TestInitializer());
-            TestFeatureContext = new FeatureContext("name = testDataBase");
-            TestFeatureContext.Database.Initialize(true);
+           TestFeatureContext = new ToggleContext("ToggleContext");
         }
-        
-        public void Dispose()
-        {
-            TestFeatureContext.Database.Delete();
-            TestFeatureContext?.Dispose();
-        }
+
     }
 }

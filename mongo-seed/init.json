@@ -1,0 +1,76 @@
+[
+    {
+        "_id":  "ServiceA",
+        
+        "features": [
+            {
+                "feature_name": "isButtonBlue",
+                "feature_version": 1,
+                "feature_enabled": true
+            },
+            {
+                "feature_name": "isButtonYellow",
+                "feature_version": 1,
+                "feature_enabled": true
+            },
+            {
+                "feature_name": "isButtonGreen",
+                "feature_version": 1,
+                "feature_enabled": true
+            }
+        ],
+        "toggle_created": {
+            "$date": "2017-08-14T03:24:32.658Z"
+        },
+        "toggle_update": {
+            "$date": "2017-08-14T03:24:32.658Z"
+        }
+    },
+    {
+       "_id":  "ServiceB",
+        "features": [
+            {
+                "feature_name": "isButtonBlue",
+                "feature_version": 1,
+                "feature_enabled": true
+            },
+            {
+                "feature_name": "isButtonYellow",
+                "feature_version": 1,
+                "feature_enabled": true
+            },
+            {
+                "feature_name": "isButtonGreen",
+                "feature_version": 1,
+                "feature_enabled": true
+            }
+        ],
+        "toggle_created": {
+            "$date": "2017-08-14T03:24:33.194Z"
+        },
+        "toggle_update": {
+            "$date": "2017-08-14T03:24:33.194Z"
+        }
+    },
+    {
+         "_id":  "ServiceC",
+        "features": [
+             {
+                "feature_name": "isButtonBlue",
+                "feature_version": 1,
+                "feature_enabled": true
+            },
+            {
+                "feature_name": "isButtonYellow",
+                "feature_version": 1,
+                "feature_enabled": false
+            }
+        ],
+        "toggle_created": {
+            "$date": "2017-08-14T03:24:33.344Z"
+        },
+        "toggle_update": {
+            "$date": "2017-08-14T03:24:33.344Z"
+        }
+    }
+]

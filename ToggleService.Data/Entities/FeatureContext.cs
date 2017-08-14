@@ -11,7 +11,7 @@ namespace ToggleService.Data.Entities
         public FeatureContext() : base("Name=FeatureContext")
         {
             Database.SetInitializer(new FeatureDbInitialize());
-            Configuration.LazyLoadingEnabled = true;
+            Configuration.LazyLoadingEnabled = false;
         }
 
         public DbSet<Feature> Features { get; set; }

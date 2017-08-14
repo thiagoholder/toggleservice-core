@@ -1,92 +1,90 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using ToggleService.Builders;
-using ToggleService.Data;
-using ToggleService.Data.Repositorys;
-using ToggleService.Domain;
+using ToggleService.DataMongoDB;
+using ToggleService.DataMongoDB.Repository;
 using Xunit;
 
 namespace ToggleService.IntegrationTests
 {
     public class RepositoryTestes : SetupDBTests
     {
-        [Fact]
-        public void Save_Entity_In_DataBase_Using_Generic_Repository()
+        private readonly IToggleRepository _repository;
+
+        public RepositoryTestes()
         {
-            var feature = new FeatureBuilder()
-                .WithDescription("New Feature")
-                .WithType("New Type")
-                .WithVersion(1)
-                .Build();
-
-            var genericRepository = new Repositoy<Feature>(TestFeatureContext);
-            var result = genericRepository.Insert(feature);
-
-            genericRepository.Should().NotBeNull();
-            result.Status.Should().Be(RepositoryActionStatus.Created);
+            _repository = new ToggleRepository();
         }
 
         [Fact]
-        public void Get_All_Existing_Entities_From_DataBase_Using_Generic_Repository()
+        public async Task Save_Toggle_In_DataBase_And_Return_New_Entitty()
         {
-            var genericRepository = new Repositoy<Feature>(TestFeatureContext);
-            var result = genericRepository.GetAll();
-
-            result.Count().Should().BeGreaterThan(0);
+            var toggle = new ToggleBuilder().WithAppName("New Toggle")
+                .Build();
+            await _repository.AddToggle(toggle);
+            
+            toggle.AppName.Should().NotBeNullOrEmpty();
         }
 
         [Fact]
-        public void Find_A_Unique_Entitie_From_DataBase_Using_Generic_Repository()
+        public async Task Get_All_Toggles()
         {
-            var feature = new FeatureBuilder()
-                .WithDescription("New Feature C")
-                .WithType("New Type C")
-                .WithVersion(1)
+            var allToggles = await _repository.GetAllToggles();
+            allToggles.Count().Should().BeGreaterThan(0);
+        }
+
+
+
+        [Fact]
+        public async Task Find_A_Unique_Toggle()
+        {
+            var toggle = new ToggleBuilder().WithAppName("Teste Find")
                 .Build();
-
-            var genericRepository = new Repositoy<Feature>(TestFeatureContext);
-            var repositoryResult = genericRepository.Insert(feature);
-            var result = genericRepository.Find(repositoryResult.Entity.Id);
-
-            repositoryResult.Status.Should().Be(RepositoryActionStatus.Created);
-            result.Should().NotBeNull();
-            result.Id.Should().Be(repositoryResult.Entity.Id);
+            await _repository.AddToggle(toggle);
+            var toggleFind = await _repository.GetToggle(toggle.AppName);
+            toggleFind.Should().NotBeNull();
         }
 
         [Fact]
-        public void Search_Entities_From_DataBase_Using_Generic_Repository_With_Predicate_Search()
+        public async Task Remove_toggle_by_id()
         {
-            var feature = new FeatureBuilder()
-                .WithDescription("New Feature A")
-                .WithType("New Type A")
-                .WithVersion(1)
+            var toggle = new ToggleBuilder().WithAppName("Teste")
                 .Build();
 
-            var genericRepository = new Repositoy<Feature>(TestFeatureContext);
-            var repositoryResult = genericRepository.Insert(feature);
-            var result = genericRepository.Get(x => x.Description.Contains("New Feature A"));
+            await _repository.AddToggle(toggle);
 
-            repositoryResult.Status.Should().Be(RepositoryActionStatus.Created);
-            result.Should().HaveCount(1).And.Contain(repositoryResult.Entity);
+            var countExistingToggle = _repository.GetAllToggles().Result.Count();
+            var delete = await _repository.RemoveToggle(toggle.AppName);
+            var allTogglesBeforeDelete = await _repository.GetAllToggles();
+
+            delete.DeletedCount.Should().Be(1);
+
+            allTogglesBeforeDelete.Should().HaveCount(countExistingToggle - 1);
+
         }
         [Fact]
-        public void Update_Entities_From_DataBase_Using_Generic_Repository()
+        public async Task Update_Toggle_by_item()
         {
-            var feature = new FeatureBuilder()
-                .WithDescription("New Feature AB")
-                .WithType("New Type AB")
-                .WithVersion(1)
+            const string newName = "Updated Toogle";
+            var toggle = new ToggleBuilder().WithAppName("ToggleNew")
                 .Build();
+            await _repository.AddToggle(toggle);
+            toggle.AppName = newName;
+            await _repository.UpdateToggleDocument(toggle.AppName, toggle);
 
-            var genericRepository = new Repositoy<Feature>(TestFeatureContext);
-            var repositoryResult = genericRepository.Insert(feature);
-            var entitieUpdate = repositoryResult.Entity;
-            entitieUpdate.Description = "New Feature Update";
-            repositoryResult = genericRepository.Update(entitieUpdate);
+            var findUpdateToggle = await _repository.GetToggle(toggle.AppName);
+            findUpdateToggle.AppName.Should().Be(newName);
+        }
 
-            repositoryResult.Status.Should().Be(RepositoryActionStatus.Updated);
-            genericRepository.Find(entitieUpdate.Id).Should().NotBeNull();
-
+        [Fact]
+        public async Task Get_Toggle_by_Name()
+        {
+           var toggle = new ToggleBuilder().WithAppName("Toggle EveryWhere")
+                .Build();
+            await _repository.AddToggle(toggle);
+            var findUpdateToggle = await _repository.GetToggleByAppName(toggle.AppName);
+            findUpdateToggle.Should().NotBeNull();
         }
 
     }

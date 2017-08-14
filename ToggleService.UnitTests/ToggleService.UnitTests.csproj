@@ -75,25 +75,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\FeatureTogglesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ToggleTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ToggleService.Application\ToggleService.Application.csproj">
-      <Project>{462D3C2E-552F-47A3-9668-DB1EE5EB508F}</Project>
-      <Name>ToggleService.Application</Name>
+    <ProjectReference Include="..\ToggleService.Builders\ToggleService.Builders.csproj">
+      <Project>{f3ca414c-b026-4831-bcb7-dc58f01aa64d}</Project>
+      <Name>ToggleService.Builders</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ToggleService.Data\ToggleService.Data.csproj">
-      <Project>{D3640DA4-1DBD-4AD3-A6C0-086893531C47}</Project>
-      <Name>ToggleService.Data</Name>
+    <ProjectReference Include="..\ToggleService.DataMongoDB\ToggleService.DataMongoDB.csproj">
+      <Project>{56de039e-0ce5-4aef-834a-fc0913571353}</Project>
+      <Name>ToggleService.DataMongoDB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ToggleService.Domain\ToggleService.Domain.csproj">
-      <Project>{CC8D370A-906C-4207-A400-39A5F00DA825}</Project>
-      <Name>ToggleService.Domain</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Application\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
