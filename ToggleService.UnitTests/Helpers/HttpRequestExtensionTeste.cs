@@ -9,7 +9,7 @@ using Xunit;
 
 namespace ToggleService.UnitTests.Helpers
 {
-    class HttpRequestExtensionTeste
+    public class HttpRequestExtensionTeste
     {
         private Mock moq;
         private Mock<HttpResponseBase> _httpResponse;
@@ -25,7 +25,7 @@ namespace ToggleService.UnitTests.Helpers
             _httpResponse.Setup(r => r.AddHeader(It.IsAny<string>(), It.IsAny<string>()))
                 .Callback<string, string>((x, y) => _httpResponse.Object.Headers.Add(x, y));
 
-            Request
+            
         }
     }
 }

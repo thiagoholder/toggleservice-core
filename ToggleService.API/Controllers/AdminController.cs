@@ -4,22 +4,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using ToggleService.Aplication;
 using ToggleService.API.Models;
 using ToggleService.DataMongoDB.Entities;
-using ToggleService.DataMongoDB.Repository;
 
 namespace ToggleService.API.Controllers
 {
     [RoutePrefix("api/admin")]
     public class AdminController : ApiController
     {
-
-        private readonly IToggleRepository _toggleRepository;
+        private readonly IToggleApplication _toggleApplication;
         private readonly ToogleFactory _toggleFactory = new ToogleFactory();
 
-        public AdminController(IToggleRepository toggleRepository)
+        public AdminController(IToggleApplication toggleApplication)
         {
-            _toggleRepository = toggleRepository;
+            _toggleApplication = toggleApplication;
         }
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace ToggleService.API.Controllers
                    
                 }
 
-                var toggles = await _toggleRepository.GetAllToggles();
+                var toggles = await _toggleApplication.GetAllToggles();
                 var enumerable = toggles as IList<Toggle> ?? toggles.ToList();
 
                 if (!enumerable.ToList().Any())
@@ -76,7 +75,7 @@ namespace ToggleService.API.Controllers
 
                 }
 
-                var toggle = await _toggleRepository.GetToggle(uniqueServiceKey);
+                var toggle = await _toggleApplication.GetToggle(uniqueServiceKey);
                 return toggle == null
                     ? (IHttpActionResult)NotFound()
                     : Ok( _toggleFactory.CreateDataShapedObject(toggle, listOfFields));
@@ -101,7 +100,7 @@ namespace ToggleService.API.Controllers
             try
             {
                
-                var toggle = await _toggleRepository.GetToggle(uniqueServiceKey);
+                var toggle = await _toggleApplication.GetToggle(uniqueServiceKey);
                 if ( toggle == null)
                     return NotFound();
 
@@ -111,6 +110,44 @@ namespace ToggleService.API.Controllers
                 return !toggle.Features.Any()
                     ? (IHttpActionResult)NotFound()
                     : Ok(_toggleFactory.CreateToggleFeature(toggle));
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
+        }
+
+        /// <summary>
+        /// Get One Feature 
+        /// </summary>
+        /// <param name="uniqueServiceKey">Unique Id Toggle</param>
+        /// <param name="featureItem"></param>
+        /// <returns></returns>
+        [Route("toggles/{uniqueServiceKey}/feature")]
+        [ResponseType(typeof(ToggleModel))]
+        [HttpPost]
+        public async Task<IHttpActionResult> PostNewFeature(string uniqueServiceKey, [FromBody] FeatureModel featureItem)
+        {
+            try
+            {
+                if (featureItem == null)
+                    return BadRequest();
+
+                var toggle = await _toggleApplication.GetToggle(uniqueServiceKey);
+
+                if (toggle == null)
+                    return NotFound();
+
+                var feature = new Feature()
+                {
+                    Enabled = featureItem.Enabled,
+                    Name = featureItem.Name,
+                    Version = featureItem.Version
+                };
+
+                await _toggleApplication.AddNewFeatureToggle(uniqueServiceKey, feature);
+
+                return Created(Request.RequestUri + "/" + toggle.AppName, toggle);
             }
             catch (Exception)
             {
@@ -136,7 +173,7 @@ namespace ToggleService.API.Controllers
                 if (toggle == null) return BadRequest();
 
                 var newToggle = _toggleFactory.CreateToggle(toggle);
-                await _toggleRepository.AddToggle(newToggle);
+                await _toggleApplication.AddToggle(newToggle);
                 
                 var newToggleModel = _toggleFactory.CreateToggle(newToggle);
                 return Created(Request.RequestUri + "/" + newToggle.AppName, newToggleModel);
@@ -160,8 +197,8 @@ namespace ToggleService.API.Controllers
         {
             try
             {
-                var toggle = _toggleRepository.GetToggle(uniqueServiceKey);
-                await _toggleRepository.RemoveToggle(uniqueServiceKey);
+                var toggle = _toggleApplication.GetToggle(uniqueServiceKey);
+                await _toggleApplication.RemoveToggle(uniqueServiceKey);
                 return Created(Request.RequestUri, toggle);
             }
             catch (Exception)
@@ -187,14 +224,14 @@ namespace ToggleService.API.Controllers
                 if(string.IsNullOrEmpty(uniqueServiceKey) || toggleModel == null)
                     return BadRequest();
 
-                var toggleExists = await _toggleRepository.GetToggle(uniqueServiceKey);
+                var toggleExists = await _toggleApplication.GetToggle(uniqueServiceKey);
 
                 if (toggleExists == null)
                     return NotFound();
 
                 var updateToggle = _toggleFactory.CreateToggle(toggleModel);
 
-                await _toggleRepository.UpdateToggleDocument(uniqueServiceKey, updateToggle);
+                await _toggleApplication.UpdateToggleDocument(uniqueServiceKey, updateToggle);
                 return Ok(updateToggle);
             }
             catch (Exception)
