@@ -1,5 +1,6 @@
 using Microsoft.Practices.Unity;
 using ToggleService.API.Controllers;
+using ToggleService.Aplication;
 using ToggleService.DataMongoDB;
 using ToggleService.DataMongoDB.Entities;
 using ToggleService.DataMongoDB.Repository;
@@ -14,8 +15,10 @@ namespace ToggleService.API
 			var container = new UnityContainer();
             container.RegisterType<AdminController>();
             container.RegisterType<ToggleRepository>(new InjectionConstructor());
-            container.RegisterType<IToggleRepository, ToggleRepository>();
             container.RegisterType<ToggleContext>(new InjectionConstructor());
+            container.RegisterType<IToggleRepository, ToggleRepository>();
+            container.RegisterType<IToggleApplication, ToggleApplication>();
+            
             return container;
         }
     }

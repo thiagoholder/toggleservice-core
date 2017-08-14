@@ -153,7 +153,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\HttpRequestMessageExtensions.cs" />
     <Compile Include="Models\Factories\ToggleFactory.cs" />
+    <Compile Include="Models\FeatureModel.cs" />
     <Compile Include="Models\ToggleFeatureModel.cs" />
     <Compile Include="Models\ToggleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -172,6 +174,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ToggleService.Aplication\ToggleService.Aplication.csproj">
+      <Project>{04195088-FF46-4E6A-AF5A-D437B5AFB2A0}</Project>
+      <Name>ToggleService.Aplication</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ToggleService.DataMongoDB\ToggleService.DataMongoDB.csproj">
       <Project>{56de039e-0ce5-4aef-834a-fc0913571353}</Project>
       <Name>ToggleService.DataMongoDB</Name>
