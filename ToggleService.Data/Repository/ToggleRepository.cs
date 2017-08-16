@@ -1,19 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using ToggleService.DataMongoDB.Entities;
-using ToggleService.DataMongoDB.Repository;
+using ToggleService.Data.Entities;
+using ToggleService.Data.Repository.Interface;
 
-namespace ToggleService.DataMongoDB
+namespace ToggleService.Data.Repository
 {
     public class ToggleRepository : IToggleRepository
     {
-        private readonly ToggleContext _context = null;
+        private readonly IToggleContext _context;
 
-        public ToggleRepository(string connection) => _context = new ToggleContext(connection);
+        public ToggleRepository(IToggleContext context)
+        {
+            _context = context;
 
-        public ToggleRepository() => _context = new ToggleContext();
-
+        }
         public async Task<IEnumerable<Toggle>> GetAllToggles()
         {
             return await _context.Toggles.Find(_ => true).ToListAsync();
@@ -30,7 +32,7 @@ namespace ToggleService.DataMongoDB
         public async Task<Toggle> GetToggleByAppName(string appName)
         {
             var filter = Builders<Toggle>.Filter.Eq(x => x.AppName, appName);
-            
+
             return await _context.Toggles
                 .Find(filter)
                 .FirstOrDefaultAsync();
@@ -59,6 +61,5 @@ namespace ToggleService.DataMongoDB
                     , new UpdateOptions { IsUpsert = true });
         }
 
-        
     }
 }

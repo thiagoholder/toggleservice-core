@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleService.API", "ToggleService.API\ToggleService.API.csproj", "{865F8A6A-39A7-4A3A-B0EF-6896C68C3F8A}"
 EndProject
@@ -18,6 +18,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleService.DataMongoDB", "ToggleService.DataMongoDB\ToggleService.DataMongoDB.csproj", "{56DE039E-0CE5-4AEF-834A-FC0913571353}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleService.Aplication", "ToggleService.Aplication\ToggleService.Aplication.csproj", "{04195088-FF46-4E6A-AF5A-D437B5AFB2A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToggleService.WebApi", "ToggleService.WebApi\ToggleService.WebApi.csproj", "{10C51E8F-7227-4229-A1FC-4E5BA0621C38}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientToggle", "ClientToggle\ClientToggle.csproj", "{FE40F6D5-3156-4C7E-994B-22799AEE4863}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToggleService.Data", "ToggleService.Data\ToggleService.Data.csproj", "{FD874E67-198A-4A9C-8278-5215E111DDC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +55,18 @@ Global
 		{04195088-FF46-4E6A-AF5A-D437B5AFB2A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04195088-FF46-4E6A-AF5A-D437B5AFB2A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04195088-FF46-4E6A-AF5A-D437B5AFB2A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10C51E8F-7227-4229-A1FC-4E5BA0621C38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10C51E8F-7227-4229-A1FC-4E5BA0621C38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10C51E8F-7227-4229-A1FC-4E5BA0621C38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10C51E8F-7227-4229-A1FC-4E5BA0621C38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE40F6D5-3156-4C7E-994B-22799AEE4863}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE40F6D5-3156-4C7E-994B-22799AEE4863}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE40F6D5-3156-4C7E-994B-22799AEE4863}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE40F6D5-3156-4C7E-994B-22799AEE4863}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD874E67-198A-4A9C-8278-5215E111DDC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD874E67-198A-4A9C-8278-5215E111DDC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD874E67-198A-4A9C-8278-5215E111DDC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD874E67-198A-4A9C-8278-5215E111DDC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,5 +75,9 @@ Global
 		{1D9BBE7F-E5B2-4146-A420-EB5C073524E6} = {4C2DB89E-149D-4EB1-80EC-2A3FD93D6BA7}
 		{B5320FA6-BF73-4B71-945D-618138219137} = {4C2DB89E-149D-4EB1-80EC-2A3FD93D6BA7}
 		{F3CA414C-B026-4831-BCB7-DC58F01AA64D} = {4C2DB89E-149D-4EB1-80EC-2A3FD93D6BA7}
+		{FE40F6D5-3156-4C7E-994B-22799AEE4863} = {58097D9E-BEE4-499B-BA6F-2C113BF3EA60}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FAE74DB8-3A79-4A4A-BA1D-36230C7353FB}
 	EndGlobalSection
 EndGlobal
