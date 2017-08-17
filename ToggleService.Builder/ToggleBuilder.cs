@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using MongoDB.Bson;
 using ToggleService.Data.Entities;
 
-namespace ToggleService.Builders
+namespace ToggleService.Builder
 {
     public class ToggleBuilder
     {
@@ -35,6 +34,5 @@ namespace ToggleService.Builders
         {
             return instance.Build();
         }
-
     }
 }

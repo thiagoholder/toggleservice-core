@@ -130,22 +130,22 @@ namespace ToggleService.WebApi
 
                 var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication>>();
 
-                if (await manager.FindByClientIdAsync("console", cancellationToken) == null)
+                if (await manager.FindByClientIdAsync("ServiceB", cancellationToken) == null)
                 {
                     var application = new OpenIddictApplication
                     {
-                        ClientId = "console",
-                        DisplayName = "My client application"
+                        ClientId = "ServiceB",
+                        DisplayName = "System Service B"
                     };
 
                     await manager.CreateAsync(application, "388D45FA-B36B-4988-BA59-B187D329C207", cancellationToken);
                 }
-                if (await manager.FindByClientIdAsync("consoleA", cancellationToken) == null)
+                if (await manager.FindByClientIdAsync("ServiceA", cancellationToken) == null)
                 {
                     var application = new OpenIddictApplication
                     {
-                        ClientId = "consoleA",
-                        DisplayName = "My client application Console A"
+                        ClientId = "ServiceA",
+                        DisplayName = "System Service A"
                     };
 
                     await manager.CreateAsync(application, "388D45FA-B36B-4988-BA59-B187D329D207", cancellationToken);

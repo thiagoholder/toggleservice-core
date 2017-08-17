@@ -77,7 +77,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\HttpRequestExtensionTeste.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToggleTests.cs" />
   </ItemGroup>
@@ -86,10 +85,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ToggleService.Builders\ToggleService.Builders.csproj">
-      <Project>{f3ca414c-b026-4831-bcb7-dc58f01aa64d}</Project>
-      <Name>ToggleService.Builders</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ToggleService.DataMongoDB\ToggleService.DataMongoDB.csproj">
       <Project>{56de039e-0ce5-4aef-834a-fc0913571353}</Project>
       <Name>ToggleService.DataMongoDB</Name>

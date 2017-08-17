@@ -3,15 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleService.API", "ToggleService.API\ToggleService.API.csproj", "{865F8A6A-39A7-4A3A-B0EF-6896C68C3F8A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleService.UnitTests", "ToggleService.UnitTests\ToggleService.UnitTests.csproj", "{1D9BBE7F-E5B2-4146-A420-EB5C073524E6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleService.IntegrationTests", "ToggleService.IntegrationTests\ToggleService.IntegrationTests.csproj", "{B5320FA6-BF73-4B71-945D-618138219137}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4C2DB89E-149D-4EB1-80EC-2A3FD93D6BA7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleService.Builders", "ToggleService.Builders\ToggleService.Builders.csproj", "{F3CA414C-B026-4831-BCB7-DC58F01AA64D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{58097D9E-BEE4-499B-BA6F-2C113BF3EA60}"
 EndProject
@@ -23,7 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientToggle", "ClientToggl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToggleService.Data", "ToggleService.Data\ToggleService.Data.csproj", "{FD874E67-198A-4A9C-8278-5215E111DDC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleService.AppService", "ToggleService.Services\ToggleService.AppService.csproj", "{753E2C73-C37D-4D57-ADC8-CF12B5806628}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToggleService.AppService", "ToggleService.Services\ToggleService.AppService.csproj", "{753E2C73-C37D-4D57-ADC8-CF12B5806628}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleService.Builder", "ToggleService.Builder\ToggleService.Builder.csproj", "{DFADF1EB-F534-43A8-8F06-D3A3F626B70A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleService.UnitTest", "ToggleService.UnitTest\ToggleService.UnitTest.csproj", "{948BCC33-CE9F-450C-8CFC-AD6875F12C42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToggleService.IntegrationTest", "ToggleService.IntegrationTest\ToggleService.IntegrationTest.csproj", "{B65B689E-E353-419E-B1C3-BC901CC74263}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,22 +31,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{865F8A6A-39A7-4A3A-B0EF-6896C68C3F8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{865F8A6A-39A7-4A3A-B0EF-6896C68C3F8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{865F8A6A-39A7-4A3A-B0EF-6896C68C3F8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{865F8A6A-39A7-4A3A-B0EF-6896C68C3F8A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1D9BBE7F-E5B2-4146-A420-EB5C073524E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1D9BBE7F-E5B2-4146-A420-EB5C073524E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1D9BBE7F-E5B2-4146-A420-EB5C073524E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1D9BBE7F-E5B2-4146-A420-EB5C073524E6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B5320FA6-BF73-4B71-945D-618138219137}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B5320FA6-BF73-4B71-945D-618138219137}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5320FA6-BF73-4B71-945D-618138219137}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5320FA6-BF73-4B71-945D-618138219137}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F3CA414C-B026-4831-BCB7-DC58F01AA64D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F3CA414C-B026-4831-BCB7-DC58F01AA64D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F3CA414C-B026-4831-BCB7-DC58F01AA64D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F3CA414C-B026-4831-BCB7-DC58F01AA64D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{56DE039E-0CE5-4AEF-834A-FC0913571353}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{56DE039E-0CE5-4AEF-834A-FC0913571353}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56DE039E-0CE5-4AEF-834A-FC0913571353}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -67,15 +55,28 @@ Global
 		{753E2C73-C37D-4D57-ADC8-CF12B5806628}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{753E2C73-C37D-4D57-ADC8-CF12B5806628}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{753E2C73-C37D-4D57-ADC8-CF12B5806628}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFADF1EB-F534-43A8-8F06-D3A3F626B70A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFADF1EB-F534-43A8-8F06-D3A3F626B70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFADF1EB-F534-43A8-8F06-D3A3F626B70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFADF1EB-F534-43A8-8F06-D3A3F626B70A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{948BCC33-CE9F-450C-8CFC-AD6875F12C42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{948BCC33-CE9F-450C-8CFC-AD6875F12C42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{948BCC33-CE9F-450C-8CFC-AD6875F12C42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{948BCC33-CE9F-450C-8CFC-AD6875F12C42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B65B689E-E353-419E-B1C3-BC901CC74263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B65B689E-E353-419E-B1C3-BC901CC74263}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B65B689E-E353-419E-B1C3-BC901CC74263}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B65B689E-E353-419E-B1C3-BC901CC74263}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1D9BBE7F-E5B2-4146-A420-EB5C073524E6} = {4C2DB89E-149D-4EB1-80EC-2A3FD93D6BA7}
 		{B5320FA6-BF73-4B71-945D-618138219137} = {4C2DB89E-149D-4EB1-80EC-2A3FD93D6BA7}
-		{F3CA414C-B026-4831-BCB7-DC58F01AA64D} = {4C2DB89E-149D-4EB1-80EC-2A3FD93D6BA7}
 		{FE40F6D5-3156-4C7E-994B-22799AEE4863} = {58097D9E-BEE4-499B-BA6F-2C113BF3EA60}
+		{DFADF1EB-F534-43A8-8F06-D3A3F626B70A} = {4C2DB89E-149D-4EB1-80EC-2A3FD93D6BA7}
+		{948BCC33-CE9F-450C-8CFC-AD6875F12C42} = {4C2DB89E-149D-4EB1-80EC-2A3FD93D6BA7}
+		{B65B689E-E353-419E-B1C3-BC901CC74263} = {4C2DB89E-149D-4EB1-80EC-2A3FD93D6BA7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FAE74DB8-3A79-4A4A-BA1D-36230C7353FB}

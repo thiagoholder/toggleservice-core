@@ -43,7 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ToggleService.Aplication\ToggleService.Aplication.csproj" />
     <ProjectReference Include="..\ToggleService.Data\ToggleService.Data.csproj" />
     <ProjectReference Include="..\ToggleService.Services\ToggleService.AppService.csproj" />
   </ItemGroup>
