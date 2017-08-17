@@ -1,23 +1,23 @@
 ﻿using System;
-
 using System.IO;
-
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using OpenIddict.Core;
 using OpenIddict.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using ToggleService.AppService.Entities;
+using ToggleService.AppService.Interfaces;
 using ToggleService.Data.Entities;
 using ToggleService.Data.Repository;
 using ToggleService.Data.Repository.Interface;
 using ToggleService.WebApi.Models;
-
 
 namespace ToggleService.WebApi
 {
@@ -36,23 +36,38 @@ namespace ToggleService.WebApi
                 .AddEnvironmentVariables()
                 .Build();
 
-            services.AddMvc();
+           
 
-            var connectionString = config.GetConnectionString("ToggleContext");
+            var configMapper = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<FeatureModel, Feature>();
+                cfg.CreateMap<ToggleModel, Toggle>().ForMember(dest => dest.AppName, opt => opt.MapFrom(src => src.AppKey));
+
+                cfg.CreateMap<Feature, FeatureModel>();
+                cfg.CreateMap<Toggle, ToggleModel>().ForMember(dest => dest.AppKey, opt => opt.MapFrom(src => src.AppName));
+            });
+
+            var mapper = configMapper.CreateMapper();
+
 
             services.AddSingleton<IToggleRepository, ToggleRepository>();
             services.AddSingleton<IToggleContext, ToggleContext>();
+            services.AddSingleton<IToggleAppService, ToggleAppService>();
             services.AddSingleton<IConfiguration>(_ => config);
-
+            services.AddSingleton(mapper);
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.Formatting = Formatting.Indented; 
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Toggle Rest API", Version = "v1" });
             });
 
-
-
-
+            
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 // Configure the context to use Microsoft SQL Server.

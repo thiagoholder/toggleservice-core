@@ -45,8 +45,8 @@ namespace ClientToggle
                 Content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     ["grant_type"] = "client_credentials",
-                    ["client_id"] = "consoleA",
-                    ["client_secret"] = "388D45FA-B36B-4988-BA59-B187D329D207"
+                    ["client_id"] = "ServiceB",
+                    ["client_secret"] = "388D45FA-B36B-4988-BA59-B187D329C207"
                 })
             };
 
@@ -64,7 +64,7 @@ namespace ClientToggle
 
         public static async Task<string> GetResourceAsync(HttpClient client, string token)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:57425/api/message");
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:57425/api/features");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead);
