@@ -5,7 +5,7 @@ using Xunit;
 
 namespace ToggleService.UnitTest
 {
-    public class UnitTest1
+    public class ToggleUnitTest
     {
         [Fact]
         public void Should_Toggle_add_new_Feature()

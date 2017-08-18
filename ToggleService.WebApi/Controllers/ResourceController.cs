@@ -13,6 +13,7 @@ using System.Linq;
 
 namespace ToggleService.WebApi.Controllers
 {
+    [Authorize(ActiveAuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme, Roles = "Features")]
     [Produces("application/json")]
     [Route("api")]
     public class ResourceController : Controller
@@ -30,7 +31,7 @@ namespace ToggleService.WebApi.Controllers
 
         }
 
-        [Authorize(ActiveAuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme)]
+        
         [HttpGet("features")]
         public async Task<IActionResult> GetFeatures()
         {
@@ -42,7 +43,10 @@ namespace ToggleService.WebApi.Controllers
                     return BadRequest();
                 }
 
+                
+
                 var application = await _applicationManager.FindByClientIdAsync(subject, HttpContext.RequestAborted);
+               
                 if (application == null)
                 {
                     return BadRequest();

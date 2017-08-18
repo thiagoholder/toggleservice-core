@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNet.Security.OAuth.Validation;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToggleService.AppService.Interfaces;
 using ToggleService.Data.Entities;
@@ -11,6 +13,7 @@ using ToggleService.WebApi.Models;
 
 namespace ToggleService.WebApi.Controllers
 {
+    [Authorize(ActiveAuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme, Roles = "Administrator")]
     [Produces("application/json")]
     [Route("api/administrator")]
     public class AdministratorController : Controller

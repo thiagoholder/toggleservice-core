@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,7 @@ using ToggleService.Data.Entities;
 using ToggleService.Data.Repository;
 using ToggleService.Data.Repository.Interface;
 using ToggleService.WebApi.Models;
-
+using AspNet.Security.OpenIdConnect.Primitives;
 namespace ToggleService.WebApi
 {
     public class Startup
@@ -35,8 +36,7 @@ namespace ToggleService.WebApi
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
-
-           
+            
 
             var configMapper = new AutoMapper.MapperConfiguration(cfg =>
             {
@@ -79,7 +79,18 @@ namespace ToggleService.WebApi
                 options.UseOpenIddict();
             });
 
-            
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
+                options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
+                options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
+            });
+
+
             services.AddOpenIddict(options =>
             {
                 // Register the Entity Framework stores.
@@ -94,7 +105,7 @@ namespace ToggleService.WebApi
                 options.EnableTokenEndpoint("/connect/token");
 
                 // Enable the client credentials flow.
-                options.AllowClientCredentialsFlow();
+                options.AllowPasswordFlow();
 
                 // During development, you can disable the HTTPS requirement.
                 options.DisableHttpsRequirement();
@@ -105,10 +116,13 @@ namespace ToggleService.WebApi
                 // options.UseJsonWebTokens();
                 // options.AddEphemeralSigningKey();
             });
+
+
+            services.AddScoped<IDbInitializer, DbInitializer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IDbInitializer dbInitializer)
         {
             loggerFactory.AddConsole();
             app.UseDeveloperExceptionPage();
@@ -116,7 +130,8 @@ namespace ToggleService.WebApi
             app.UseOpenIddict();
             app.UseMvcWithDefaultRoute();
             app.UseWelcomePage();
-          InitializeAsync(app.ApplicationServices, CancellationToken.None).GetAwaiter().GetResult();
+            dbInitializer.Initialize();
+            // InitializeAsync(app.ApplicationServices, CancellationToken.None).GetAwaiter().GetResult();
 
         }
 
@@ -127,18 +142,23 @@ namespace ToggleService.WebApi
             {
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 await context.Database.EnsureCreatedAsync();
+                
 
                 var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication>>();
 
                 if (await manager.FindByClientIdAsync("ServiceB", cancellationToken) == null)
                 {
+                    
+
                     var application = new OpenIddictApplication
                     {
                         ClientId = "ServiceB",
-                        DisplayName = "System Service B"
+                        DisplayName = "System Service B",
+                       
                     };
 
                     await manager.CreateAsync(application, "388D45FA-B36B-4988-BA59-B187D329C207", cancellationToken);
+                    
                 }
                 if (await manager.FindByClientIdAsync("ServiceA", cancellationToken) == null)
                 {

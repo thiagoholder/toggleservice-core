@@ -1,8 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFrameworks>netstandard1.5;NET47</TargetFrameworks>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.4.4" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ToggleService.Data\ToggleService.Data.csproj" />

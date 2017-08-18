@@ -25,7 +25,6 @@ namespace ToggleService.Builder
 
         public ToggleBuilder WithFeatures(Feature feature)
         {
-            _features.Clear();
             _features.Add(feature);
             return this;
         }

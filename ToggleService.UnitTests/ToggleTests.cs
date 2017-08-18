@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
-using ToggleService.Builders;
-using ToggleService.DataMongoDB.Entities;
+using ToggleService.Builder;
+using ToggleService.Data.Entities;
 using Xunit;
 
 namespace ToggleService.UnitTests
 {
     public class ToggleTests
     {
-      
+
         [Fact]
         public void Should_Toggle_add_new_Feature()
         {
@@ -21,9 +21,10 @@ namespace ToggleService.UnitTests
             toggle.Should().BeOfType<Toggle>();
             toggle.Should().NotBeNull();
 
-            toggle.Features.Should().HaveCount(2);
+            toggle.Features.Should().HaveCount(3);
             toggle.Features.Should().Contain(x => x == feature);
             toggle.Features.Should().Contain(x => x.Name == "Feature A");
+            toggle.Features.Should().Contain(x => x.Name == "Feature B");
         }
 
         [Fact]
@@ -33,10 +34,10 @@ namespace ToggleService.UnitTests
             var feature = new Feature() { Enabled = true, Name = "Feature A", Version = 1 };
             var toggle =
                 new ToggleBuilder().WithFeatures(feature).Build();
-            toggle.Features.Should().HaveCount(1);
+            toggle.Features.Should().HaveCount(2);
 
             toggle.RemoveFeature(feature);
-            toggle.Features.Should().HaveCount(0);
+            toggle.Features.Should().HaveCount(1);
         }
 
         [Fact]
@@ -44,13 +45,12 @@ namespace ToggleService.UnitTests
         {
             var featureA = new Feature() { Enabled = true, Name = "Feature A", Version = 1 };
             var featureB = new Feature() { Enabled = true, Name = "Feature B", Version = 1 };
-            var toggle =
-                new ToggleBuilder().WithFeatures(featureA).Build();
+            var toggle = new ToggleBuilder().WithFeatures(featureA).Build();
             toggle.AddFeature(featureB);
 
             var findFeature = toggle.FindFeature(x => x.Name == featureA.Name);
 
-            toggle.Features.Should().HaveCount(2);
+            toggle.Features.Should().HaveCount(3);
             findFeature.Should().BeOfType<Feature>();
             findFeature.Should().NotBeNull();
             findFeature.ShouldBeEquivalentTo(featureA);
@@ -62,25 +62,32 @@ namespace ToggleService.UnitTests
         {
             var featureA = new Feature() { Enabled = true, Name = "Feature A", Version = 1 };
             var featureB = new Feature() { Enabled = true, Name = "Feature B", Version = 1 };
-            var toggle = new ToggleBuilder().WithFeatures(featureA).Build();
-
-            toggle.AddFeature(featureB);
-            toggle.AddFeature(featureA);
+            var toggle = new ToggleBuilder()
+                .WithFeatures(featureA)
+                .Build();
 
             toggle.Features.Should().HaveCount(2);
-            
+
+            toggle.AddFeature(featureB);
+
+            toggle.Features.Should().HaveCount(3);
+
         }
         [Fact]
         public void Should_Not_Remove_Inexisting_Feature()
         {
             var featureA = new Feature() { Enabled = true, Name = "Feature A", Version = 1 };
-            var toggle = new ToggleBuilder().WithFeatures(featureA).Build();
-            toggle.Features.Should().HaveCount(1);
-
             var featureB = new Feature() { Enabled = true, Name = "Feature B", Version = 1 };
+            var toggle = new ToggleBuilder()
+                .WithFeatures(featureA)
+                .Build();
+
+            toggle.Features.Should().HaveCount(2);
+
+
             toggle.RemoveFeature(featureB);
 
-            toggle.Features.Should().HaveCount(1);
+            toggle.Features.Should().HaveCount(2);
             toggle.Features.Should().NotContain(x => x == featureB);
         }
 
