@@ -10,25 +10,25 @@ using AutoMapper;
 using ToggleService.Data.Entities;
 using ToggleService.WebApi.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
 
 namespace ToggleService.WebApi.Controllers
 {
-    [Authorize(ActiveAuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme, Roles = "Features")]
+
+    [Authorize(ActiveAuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme, Roles = "Feature")]
     [Produces("application/json")]
     [Route("api")]
     public class ResourceController : Controller
     {
-        private readonly OpenIddictApplicationManager<OpenIddictApplication> _applicationManager;
         private readonly IToggleRepository _toggleRepository;
         private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ResourceController(OpenIddictApplicationManager<OpenIddictApplication> applicationManager,
-            IToggleRepository toggleRepository, IMapper mapper)
+        public ResourceController(IToggleRepository toggleRepository, IMapper mapper, UserManager<ApplicationUser> userManager)
         {
-            _applicationManager = applicationManager;
             _toggleRepository = toggleRepository;
             _mapper = mapper;
-
+            _userManager = userManager;
         }
 
         
@@ -42,19 +42,11 @@ namespace ToggleService.WebApi.Controllers
                 {
                     return BadRequest();
                 }
-
-                
-
-                var application = await _applicationManager.FindByClientIdAsync(subject, HttpContext.RequestAborted);
                
-                if (application == null)
-                {
-                    return BadRequest();
-                }
-
-                var toggle = await _toggleRepository.GetToggleByAppName(application.ClientId);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var toggle = await _toggleRepository.GetToggleByAppName(user.AppKeyName);
                 if (toggle == null)
-                    return StatusCode(401);
+                   return StatusCode(401);
 
                 var toggleModel = _mapper.Map<Toggle, ToggleModel>(toggle);
 
@@ -67,7 +59,6 @@ namespace ToggleService.WebApi.Controllers
             }
         }
 
-        [Authorize(ActiveAuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme)]
         [HttpGet("features/{featureName}")]
         public async Task<IActionResult> GetFeature(string featureName)
         {
@@ -79,13 +70,8 @@ namespace ToggleService.WebApi.Controllers
                     return BadRequest();
                 }
 
-                var application = await _applicationManager.FindByClientIdAsync(subject, HttpContext.RequestAborted);
-                if (application == null)
-                {
-                    return BadRequest();
-                }
-
-                var toggle = await _toggleRepository.GetToggleByAppName(application.ClientId);
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var toggle = await _toggleRepository.GetToggleByAppName(user.AppKeyName);
                 if (toggle == null)
                     return StatusCode(401);
 

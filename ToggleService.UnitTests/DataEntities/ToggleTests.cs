@@ -3,7 +3,7 @@ using ToggleService.Builder;
 using ToggleService.Data.Entities;
 using Xunit;
 
-namespace ToggleService.UnitTests
+namespace ToggleService.UnitTests.DataEntities
 {
     public class ToggleTests
     {

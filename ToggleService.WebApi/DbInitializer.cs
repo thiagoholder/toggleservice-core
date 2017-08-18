@@ -24,11 +24,13 @@ namespace ToggleService.WebApi
 
         public async void Initialize()
         {
+
+            
             //create database schema if none exists
             _context.Database.EnsureCreated();
 
 
-            await CreateUser("administrator@toggleservice.com", "sW5brAwaCu=a", "Administrator", "Full");
+            await CreateUser("administrator@toggleservice.com", "sW5brAwaCu=a", "Admin", "Full");
             await CreateUser("clienta@toggleservice.com", "c=ba?UdRet5C", "Feature", "ServiceA");
             await CreateUser("clientb@toggleservice.com", "c=ba?UdRet5C", "Feature", "ServiceB");
             await CreateUser("clientc@toggleservice.com", "c=ba?UdRet5C", "Feature", "ServiceC");
@@ -46,13 +48,13 @@ namespace ToggleService.WebApi
             switch (userFind)
             {
                 case null:
-                    var result =    await _userManager.CreateAsync(new ApplicationUser {UserName = user, Email = user, EmailConfirmed = false, AppKeyName = appkey},
+                    var result =    await _userManager.CreateAsync(new ApplicationUser {UserName = user, Email = user, EmailConfirmed = true, AppKeyName = appkey},
                         password);
                     if(result.Succeeded)
                         await _userManager.AddToRoleAsync(await _userManager.FindByNameAsync(user), role);
                     break;
                 default:
-                    await _userManager.DeleteAsync(userFind);
+                    await _userManager.UpdateAsync(userFind);
                     break;
             }
         }

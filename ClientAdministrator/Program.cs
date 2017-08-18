@@ -6,16 +6,16 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
-namespace ClientToggle
+namespace ClientAdministrator
 {
-    public class Program
+    class Program
     {
         public static void Main(string[] args) => MainAsync(args).GetAwaiter().GetResult();
 
         public static async Task MainAsync(string[] args)
         {
             var client = new HttpClient();
-            const string email = "clientc@toggleservice.com", password = "c=ba?UdRet5C";
+            const string email = "administrator@toggleservice.com", password = "sW5brAwaCu=a";
             var token = await GetTokenAsync(client, email, password);
             Console.WriteLine("Access token: {0}", token);
             Console.WriteLine();
@@ -52,27 +52,23 @@ namespace ClientToggle
         public static async Task<string> GetResourceAsync(HttpClient client, string token)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:57425/api/administrator/toggles");
-            Console.WriteLine("Acess admin area: {0}", request.RequestUri);
-            var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead);
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-                Console.WriteLine("You not Allowed to Acess This Area");
-
-
-            request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:57425/api/features");
+            Console.WriteLine("Acess admin area with all toogles: {0}", request.RequestUri);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            Console.WriteLine("Accessing the features available to this client: {0}", request.RequestUri);
-            response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead);
-            if(response.StatusCode == HttpStatusCode.Unauthorized)
-                return "You Not Allowed to Acess This Area";
+
+            var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead);
+            if (response.StatusCode == HttpStatusCode.Forbidden)
+                return "You Not Permission to Acess This Area";
 
             Console.WriteLine(await response.Content.ReadAsStringAsync());
 
-            request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:57425/api/features/isButtonBlue");
+            request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:57425/api/administrator/toggles/ServiceB/isButtonBlue");
+            Console.WriteLine("Acess admin area with toggle and Features: {0}", request.RequestUri);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            Console.WriteLine("Accessing the features available to this client through the name: isButtonBlue - {0}", request.RequestUri);
+
             response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead);
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-                return "You Not Allowed to Acess This Area";
+
+            if (response.StatusCode == HttpStatusCode.Forbidden)
+                return "You Not Permission to Acess This Area";
 
             return await response.Content.ReadAsStringAsync();
         }

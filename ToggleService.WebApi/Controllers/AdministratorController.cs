@@ -13,7 +13,7 @@ using ToggleService.WebApi.Models;
 
 namespace ToggleService.WebApi.Controllers
 {
-    [Authorize(ActiveAuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme, Roles = "Administrator")]
+    [Authorize(ActiveAuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme, Roles = "Admin")]
     [Produces("application/json")]
     [Route("api/administrator")]
     public class AdministratorController : Controller
@@ -35,7 +35,7 @@ namespace ToggleService.WebApi.Controllers
         {
             try
             {
-                var togglesFound = await _repository.GetAllToggles();
+                    var togglesFound = await _repository.GetAllToggles();
                 var enumerable = togglesFound as IList<Toggle> ?? togglesFound.ToList();
 
                 if (!enumerable.Any())
@@ -113,6 +113,52 @@ namespace ToggleService.WebApi.Controllers
         }
 
         /// <summary>
+        /// Add New Toggle
+        /// </summary>
+        /// <param name="toggleModel"></param>
+        /// <returns></returns>
+        [Route("toggles")]
+        [HttpPost]
+        public async Task<IActionResult> PostNewToggle([FromBody] ToggleModel toggleModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest();
+
+                var toggle = _mapper.Map<ToggleModel, Toggle>(toggleModel);
+                await _repository.AddToggle(toggle);
+
+                return Created($"toggles", toggle);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        }
+
+        /// <summary>
+        /// Delete Toggle
+        /// </summary>
+        /// <param name="toggleName"></param>
+        /// <returns></returns>
+        [Route("toggles/{togglename}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteToggle(string toggleName)
+        {
+            try
+            {   
+                await _repository.RemoveToggle(toggleName);
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+        }
+
+
+        /// <summary>
         /// Add New Feature to Toggle
         /// </summary>
         /// <param name="uniqueServiceKey">Unique Id Toggle</param>
@@ -170,8 +216,8 @@ namespace ToggleService.WebApi.Controllers
         /// <param name="uniqueServiceKey">Unique Id Toggle</param>
         /// <param name="featureName">Name Feature</param>
         /// <returns></returns>
-        [Route("toggles/{uniqueServiceKey}/feature")]
-        [HttpPut]
+        [Route("toggles/{uniqueServiceKey}/feature/{featureName}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteFeature(string uniqueServiceKey, string featureName)
         {
             try
